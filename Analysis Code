@@ -1,0 +1,31 @@
+-- 1. What are the names of all the customers who live in New York?
+-- select concat(firstname, ' ' ,lastname) as name from customers where city = 'New York'
+
+-- 2. What is the total number of accounts in the Accounts table?
+-- select count(AccountId) total_accounts from accounts 
+
+-- 3. What is the total balance of all checking accounts?
+-- select sum(Balance) total_Balance from accounts where AccountType = 'Checking'
+
+-- 4. What is the total balance of all accounts associated with customers who live in Los Angeles?
+-- select sum(balance) as Total_Bal from accounts a left join customers c on a.CustomerId =c.CustomerId where City = 'Los Angeles'
+
+-- 5. Which branch has the highest average account balance?
+-- select b.BranchName,count(a.AccountID) Total_accounts, round(avg(balance),2) Average_Balance from accounts a left join branches b on a.BranchID = b.BranchID group by b.BranchName order by avg(balance) Desc limit 1
+
+-- 6. Which customer has the highest current balance in their accounts?
+-- Select concat(FirstName, ' ', LastName), a.balance from customers c left join accounts a on c.customerID = a.customerID where a.customerID = (select customerID from accounts where AccountType = 'Checking' group by customerID order by sum(balance) DEsc limit 1)
+
+
+-- 7. Which customer has made the most transactions in the Transactions table?
+-- select a.customerID ,concat(FirstName, ' ', LastName) Customer_Name,count(TransactionID)from accounts a left join transactions t on a.accountID = t.accountID left join customers c on a.customerID = c.customerID group by a.CustomerID,concat(FirstName, ' ', LastName) order by count(t.TransactionID) Desc
+
+-- 8.Which branch has the highest total balance across all of its accounts?
+-- Select concat(FirstName, ' ', LastName), a.balance from customers c left join accounts a on c.customerID = a.customerID where a.customerID = (select customerID from accounts group by customerID order by sum(balance) DEsc limit 1)
+
+-- 9. Which customer has the highest total balance across all of their accounts, including savings and checking accounts?
+-- select customerID,sum(balance) Acc_Balance from accounts group by customerID order by sum(balance) desc limit 1
+
+-- 10. Which branch has the highest number of transactions in the Transactions table?
+-- select BranchID, count(transactionID) from transactions t left join accounts a on t.accountId = a.accountID group by BranchID order by count(transactionID) desc limit 1
+
